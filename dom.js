@@ -1,166 +1,110 @@
-const container = document.getElementById('container');
+"use strict"
+let seatCounts = 0;
+let bgCount = 0;
+let selectedSeats = []
+const seats = document.getElementsByClassName('lg:w-[100px]');
+for (const seat of seats) {
+    seat.addEventListener('click', function () {
+        selectedSeats.push(seat.innerText)
 
-const seats = document.querySelectorAll(".row .seat:not(.sold)");
-//console.log(seats)
-//console.log(seat)
-const seatCount = document.getElementById('seat-count');
-const totalPrice = document.getElementById('total-price');
+        if (selectedSeats.length < 5) {
+            seat.classList.add("bg-green-500")
+            let tableRow = document.createElement("tr")
+            let tableCell = document.createElement("td")
+            let tableCell2 = document.createElement("td")
+            let tableCell3 = document.createElement("td")
 
-const selectSeatValue = document.getElementById('select-seat-value');
+            tableCell.textContent = seat.innerText
+            tableCell2.textContent = "Economoy"
+            tableCell3.textContent = "550"
+            tableRow.appendChild(tableCell)
+            tableRow.appendChild(tableCell2)
+            tableRow.appendChild(tableCell3)
+            tableBody.appendChild(tableRow)
+            // seat count //
+            const seatCount = document.getElementById('seat-count');
+            seatCounts++;
+            seatCount.innerText = seatCounts;
 
+            const totalSeat = document.getElementById('total-seat').innerText;
+            const convertedTotalSeat = parseInt(totalSeat);
+            const newTotalSeat = convertedTotalSeat - 1;
+            document.getElementById('total-seat').innerText = newTotalSeat;
+        }
 
-const priceChange = document.getElementById('price-change');
- 
-const totalSeat = document.getElementById('total-seat');
+        else{
+            alert("You have buy only 4 seats")
+        }
 
-const Price = document.getElementById('trick-price');
+       
 
-//console.log(trickPrice);
+       
+        // ...........seat count jug biyug complete............... //
 
-Price.addEventListener("change", e => {
-    //Update ticket price and store selected movie data
-    ticketPrice = +e.target.value;
-   
-  
-    //console.log(changePrice)
-  });
+        // ...........price calculate ............//
+        const seatPrices = document.getElementById('ticket-price');
+        const seatPricesText = seatPrices.innerText
+        const seatPrice = parseInt(seatPricesText);
 
-  let bgCount = 0;
+        const totalPrices = document.getElementById('total-price');
+        const totalPricesText = totalPrices.innerText;
+        const totalPrice = parseInt(totalPricesText);
+        const confirmTotalPrice = seatPrice + totalPrice;
+        totalPrices.innerText = confirmTotalPrice;
 
-  // Event listner for seat clicks
-container.addEventListener("click", e => {
-    // check if a seat is clicked and not sold
-    if (
-      e.target.classList.contains("seat") &&
-      !e.target.classList.contains("sold") && bgCount <4){
-      //Toggle seat selection
-      bgCount =bgCount + 1;
-        ///---------------------------------------------
-      const targetText = event.target.innerText;
-     console.log(targetText)
-      const appendContainer = document.getElementById('append-container');
-      const p1 = document.createElement("p");
-      p1.innerText = targetText;
+        const grandTotals = document.getElementById('grand-total');
+        const grandTotalsText = grandTotals.innerText;
+        const grandTotal = parseInt(grandTotalsText);
+        grandTotals.innerText = seatPrice + grandTotal;
 
-      const p2 = document.createElement("p");
-      p2.innerText = "Economoy"
-
-      const p3 = document.createElement("p");
-        p3.innerText = 550;
-
-        const div = document.createElement("div")
-
-        div.appendChild(p1);
-        div.appendChild(p2);
-        div.appendChild(p3);
-        div.classList.add("flex");
-        div.classList.add("justify-between");
-        console.log(div);
-        appendContainer.appendChild(div);
-
-     
-
-
-
-      e.target.classList.toggle("selected");
-      //selectSeatValue.innerText = e.target.classList.contains("seat").value;
-
-      //e.target.classList.style.backgroundColor ='red';
-  
-      // Update displayed count and total
-     
-    }
-    else{
-        alert('This Trickt is selected')
-    }
-
-     
-    
-    updateSelectedCount();
-  });
+        // ............................................................... // 
+      
 
 
-  // function select(){
-  //   const selectedSeats = document.querySelectorAll(".row .seat.selected");
-  //   const value = +selectedSeats.value;
-  //   console.log(selectedSeats.value)
-  //   selectSeatValue.innerText = value;
-  // }
-
-  function updateSelectedCount() {
-    // Get all selected seats
-    const selectedSeats = document.querySelectorAll(".row .seat.selected");
-    
-    // Get an array of selected seats's indexes
-    const seatsIndex = [...selectedSeats].map(seat => [...seats].indexOf(seat));
-  
-    // Store selected seats index into local storage
-    //localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
-  
-    // Calculate selected seats and count
-    const selectedSeatsCounts = selectedSeats.length;
-  
-    // Update UI with selected seats count and total price
-    count.innerText = selectedSeatsCounts;
-    priceChange.innerText = ticketPrice;
-    const Total = selectedSeatsCounts * ticketPrice;
+    })
+}
 
 
-    
 
 
 
 // discount cupoon section ///
 document.getElementById('apply-btn').addEventListener('click', function () {
 
-  const cuponField = document.getElementById('cupun-field').value;
-  if (cuponField === "Couple 20") {
+    const cuponField = document.getElementById('cupun-field').value;
+    if (cuponField === "Couple 20") {
 
-      const grandTotal = document.getElementById('grand-total');
-      const grandTotalValue = parseInt(grandTotal.innerText);
-      const grand = Total - (grandTotalValue * 0.20);
+        const grandTotal = document.getElementById('grand-total');
+        const grandTotalValue = parseInt(grandTotal.innerText);
+        grandTotal.innerText = grandTotalValue - (grandTotalValue * 0.2);
+        // console.log(grandTotal)
 
-      grandTotal.innerText = grand;
+        const inputField = document.getElementById('input-field');
+        inputField.classList.add('hidden');
+        // modal //
+        const showModal = document.getElementById('next-btn');
+        showModal.addEventListener('click', function () {
+            my_modal_1.showModal();
+        })
 
-      // console.log(grandTotal)
+    }
+    else if (cuponField === "NEW15") {
+        const grandTotal = document.getElementById('grand-total');
+        const grandTotalValue = parseInt(grandTotal.innerText);
+        grandTotal.innerText = grandTotalValue - (grandTotalValue * 0.15);
 
-      // const inputField = document.getElementById('input-field');
-      // inputField.classList.add('hidden');
-      // modal //
-      const showModal = document.getElementById('');
-      showModal.addEventListener('click', function () {
-          my_modal_1.showModal();
-      })
+        const inputField = document.getElementById('input-field');
+        inputField.classList.add('hidden');
 
-  }
-  else if (cuponField === "NEW15") {
-      const grandTotal = document.getElementById('grand-total');
-      const grandTotalValue = parseInt(grandTotal.innerText);
-       
-
-       const grand = Total - (grandTotalValue * 0.15);
-
-       grandTotal.innerText = grand;
-
-      // const inputField = document.getElementById('input-field');
-      // inputField.classList.add('hidden')
-  }
-  else {
-      alert("Invalid Cupon Code");
-      document.getElementById('cupun-field').value = "";
-  }
+          // modal //
+          const showModal = document.getElementById('next-btn');
+          showModal.addEventListener('click', function () {
+              my_modal_1.showModal();
+            })
+    }
+    else {
+        alert("Invalid Cupon Code");
+        document.getElementById('cupun-field').value = "";
+    }
 
 })
-    total.innerText = Total;
-  
-    totalSeat.innerText = 40 - selectedSeatsCounts;
-    
-  }
-  
- function show(){
-  const Main = document.getElementById('main');
-  Main.classList.add('hidden')
-  const complied = document.getElementById('compiled');
-   complied.classList.remove('hidden')
- }
- 
